@@ -167,7 +167,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FDF7F2",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -177,11 +177,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerText: {
-    fontSize: 36,
-    fontWeight: "700",
+    fontSize: 48,
+    fontWeight: "800",
     textAlign: "center",
-    color: "#333",
+    color: "#3B2F2F",
     marginHorizontal: 20,
+    letterSpacing: 2,
+    textShadowColor: "rgba(0,0,0,0.15)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
   redeemedProductTextBlack: {
     fontSize: 24,
@@ -206,15 +210,16 @@ const styles = StyleSheet.create({
   outlinedButton: {
     borderWidth: 2,
     borderColor: "#6D9FB1",
-    borderRadius: 8,
+    borderRadius: 30,
     paddingVertical: 12,
     paddingHorizontal: 40,
     backgroundColor: "transparent",
+    marginBottom: 90,
   },
   smallResetButton: {
     borderWidth: 1,
     borderColor: "#6D9FB1",
-    borderRadius: 4,
+    borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 15,
     backgroundColor: "transparent",
