@@ -9,19 +9,16 @@ import {
 } from "react-native";
 import CausalityClient from "@/api/causality_client";
 import * as Linking from "expo-linking";
-// import Toast from 'react-native-root-toast';
 
 export default function App() {
-  const [redeemedProduct, setRedeemedProduct] = useState<string | null>("Large Pizza");
-  const [deepLink, setDeepLink] = useState<string | null>(null);
-
+  const [redeemedProduct, setRedeemedProduct] = useState<string | null>(null);
 
   const client = new CausalityClient(
     {
       "Content-Type": "application/json",
     },
-    "$2y$10$wjBFiFlS3medyxMYFw6JK.g2KBrv9oLKZ1aO0RMLoO8cdfrEyO5Ty",
-    "dhz7wo8J"
+    "$2y$10$W4dqnW2O.GzgpeVqYf2IieWM5rZSikke7WO9bM9wCV3sylVK9WoJ2",
+    "KchbMwUT"
   );
 
   const startRedeem = async () => {
@@ -30,7 +27,6 @@ export default function App() {
       const response = await client.requestQrCode();
 
       if (response.status === 200) {
-        setDeepLink(response.deeplink as string);
         try {
           const supported = await Linking.canOpenURL(
             response.deeplink as string
@@ -73,49 +69,6 @@ export default function App() {
 
   return (
 
-  //   <SafeAreaView style={styles.container}>
-  //     {/* Top section with large centered text + toast*/}
-
-
-
-  //     <View style={styles.headerContainer}>
-  //       <Text style={styles.headerText}>PlateShare</Text>
-  //     </View>
-
-  //     {/* Middle section with an outlined button */}
-  //     {redeemedProduct && <Text> {redeemedProduct} Redemption Verified</Text>}
-
-  //     { redeemedProduct &&
-  //     <View style={styles.buttonContainer}>
-  //       <Pressable
-  //         style={({ pressed }) => [
-  //           styles.outlinedButton,
-  //           pressed && styles.buttonPressed,
-  //         ]}
-  //         onPress={() => {
-  //           setRedeemedProduct(null);
-  //         }}
-  //       >
-  //         <Text style={styles.buttonText}>Reset</Text>
-  //       </Pressable>
-  //     </View>
-  //     }
-
-  //     <View style={styles.buttonContainer}>
-  //       <Pressable
-  //         style={({ pressed }) => [
-  //           styles.outlinedButton,
-  //           pressed && styles.buttonPressed,
-  //         ]}
-  //         onPress={() => {
-  //           startRedeem();
-  //         }}
-  //       >
-  //         <Text style={styles.buttonText}>Redeem</Text>
-  //       </Pressable>
-  //     </View>
-  //   </SafeAreaView>
-  // );
   <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>PlateShare</Text>
@@ -139,7 +92,7 @@ export default function App() {
               setRedeemedProduct(null);
             }}
           >
-            <Text style={styles.smallResetButtonText}>Clear Text</Text>
+            <Text style={styles.smallResetButtonText}>Confirm</Text>
           </Pressable>
         </View>
       )}
