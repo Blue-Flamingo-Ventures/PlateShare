@@ -1,4 +1,3 @@
-import { act } from "react";
 
 type Headers = Record<string, string>;
 

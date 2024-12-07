@@ -22,12 +22,10 @@ export default function App() {
   );
 
   const startRedeem = async () => {
-    console.log("starting func");
     try {
       setRedeemedProduct(null);
       const response = await client.requestQrCode();
 
-      console.log("first resp = ", response);
       if (response.status === 200) {
         setDeepLink(response.deeplink as string);
         try {
@@ -35,7 +33,6 @@ export default function App() {
             response.deeplink as string
           );
           if (supported) {
-            console.log("trying open url ", response.deeplink);
             await Linking.openURL(response.deeplink as string);
           } else {
             console.error(
@@ -47,7 +44,6 @@ export default function App() {
           console.error("Error", ("Failed to open app: " + error) as string);
         }
       } else {
-        console.log(response.message);
         setRedeemedProduct(null);
         return;
       }
@@ -68,7 +64,7 @@ export default function App() {
         );
       }
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
     }
   };
 
