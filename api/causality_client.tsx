@@ -18,12 +18,24 @@ interface RequestQrCodeResponse {
   message?: string;
 }
 
+interface ApiStatusCheckParams {
+  code: string
+}
+
+interface ApiStatusCheckResponse {
+  message: string;
+  nfc_tag: string;
+  chip_type: string;
+  product_id: string;
+  product_name: string;
+  status: number;
+}
 class CausalityClient {
   private baseURL: string;
   private defaultHeaders: Headers;
 
   constructor(defaultHeaders: Headers = {}) {
-    this.baseURL = "https://causality.xyz"; // causality base url
+    this.baseURL = "https://causality.xyz/api"; // causality base url
     this.defaultHeaders = defaultHeaders;
   }
 
@@ -107,6 +119,13 @@ class CausalityClient {
   ): Promise<RequestQrCodeResponse> {
     const response = await this.post("/requestQrCode", params);
     return response as RequestQrCodeResponse;
+  }
+
+  public async apiStatusCheck(
+    params: ApiStatusCheckParams
+  ): Promise<ApiStatusCheckResponse> {
+    const response = await this.post("/apiStatusCheck", params);
+    return response as ApiStatusCheckResponse;
   }
 }
 
