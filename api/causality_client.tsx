@@ -1,3 +1,5 @@
+import { act } from "react";
+
 type Headers = Record<string, string>;
 
 interface RequestOptions extends RequestInit {
@@ -30,13 +32,29 @@ interface ApiStatusCheckResponse {
   product_name: string;
   status: number;
 }
+
+interface ClearUidsRequest {
+  key: string;
+  token: string;
+  action: string;
+}
+
+interface ClearUidsResponse {
+  message: string,
+  status: string,
+}
+
 class CausalityClient {
   private baseURL: string;
   private defaultHeaders: Headers;
+  private token: string;
+  private key: string;
 
-  constructor(defaultHeaders: Headers = {}) {
+  constructor(defaultHeaders: Headers = {}, key: string, token: string) {
     this.baseURL = "https://causality.xyz/api"; // causality base url
     this.defaultHeaders = defaultHeaders;
+    this.token = token;
+    this.key = key;
   }
 
   // Set a specific header
@@ -114,9 +132,11 @@ class CausalityClient {
     return this._fetch(endpoint, { ...options, method: "DELETE" });
   }
 
-  public async requestQrCode(
-    params: RequestQrCodeParams
-  ): Promise<RequestQrCodeResponse> {
+  public async requestQrCode(): Promise<RequestQrCodeResponse> {
+    let params: RequestQrCodeParams = {
+      key: this.key,
+      token: this.token
+    }
     const response = await this.post("/requestQrCode", params);
     return response as RequestQrCodeResponse;
   }
@@ -127,6 +147,18 @@ class CausalityClient {
     const response = await this.post("/apiStatusCheck", params);
     return response as ApiStatusCheckResponse;
   }
+
+  public async clearUids(): Promise<ClearUidsResponse> {
+    let params: ClearUidsRequest = {
+      key: this.key,
+      token: this.token,
+      action: "remove"
+    }
+    const response = await this.post("/clear_uids", params);
+    return response as ClearUidsResponse;
+  }
+
+  
 }
 
 export default CausalityClient;
