@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
@@ -10,8 +9,8 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
-import CausalityClient from "@/api/causality_client";
 import * as Linking from "expo-linking";
+import CausalityClient from "causality-ts";
 
 export default function App() {
   // const [redeemedProduct, setRedeemedProduct] = useState<string | null>(null);
@@ -22,9 +21,6 @@ export default function App() {
   );
 
   const client = new CausalityClient(
-    {
-      "Content-Type": "application/json",
-    },
     "$2y$10$W4dqnW2O.GzgpeVqYf2IieWM5rZSikke7WO9bM9wCV3sylVK9WoJ2",
     "KchbMwUT"
   );
@@ -32,7 +28,7 @@ export default function App() {
   const startRedeem = async () => {
     try {
       setRedeemedProduct(null);
-      const response = await client.requestQrCode();
+      const response = await client.RequestQrCode();
 
       if (response.status === 200) {
         try {
@@ -59,7 +55,7 @@ export default function App() {
       for (let i = 5000; i < 30000; i += 5000) {
         setTimeout(
           async (qrCode: string) => {
-            const response = await client.apiStatusCheck({
+            const response = await client.ApiStatusCheck({
               code: qrCode,
             });
             if (response.status == 200) {

@@ -21,7 +21,6 @@
 //     "dhz7wo8J"
 //   );
 
-
 //   return (
 //     <View style={styles.buttonContainer}>
 //       <Pressable
@@ -86,23 +85,15 @@
 //   },
 // });
 
-import {
-  StyleSheet,
-  View,
-  Pressable,
-  Text,
-} from "react-native";
+import { StyleSheet, View, Pressable, Text } from "react-native";
 import { useState } from "react";
 
-import CausalityClient from "@/api/causality_client";
+import CausalityClient from "causality-ts";
 
 export default function TabTwoScreen() {
   const [clearResult, setClearResult] = useState<string | null>(null);
 
   const client = new CausalityClient(
-    {
-      "Content-Type": "application/json",
-    },
     "$2y$10$wjBFiFlS3medyxMYFw6JK.g2KBrv9oLKZ1aO0RMLoO8cdfrEyO5Ty",
     "dhz7wo8J"
   );
@@ -123,7 +114,7 @@ export default function TabTwoScreen() {
           ]}
           onPress={async () => {
             console.log("hello from func");
-            let response = await client.clearUids();
+            let response = await client.ClearUids();
             console.log(response);
             setClearResult(response.message);
           }}
@@ -141,7 +132,9 @@ export default function TabTwoScreen() {
           <Text style={styles.nonFunctionalButtonText}>Change Password</Text>
         </Pressable>
         <Pressable style={styles.nonFunctionalButton}>
-          <Text style={styles.nonFunctionalButtonText}>Notification Settings</Text>
+          <Text style={styles.nonFunctionalButtonText}>
+            Notification Settings
+          </Text>
         </Pressable>
         <Pressable style={styles.nonFunctionalButton}>
           <Text style={styles.nonFunctionalButtonText}>Privacy Policy</Text>

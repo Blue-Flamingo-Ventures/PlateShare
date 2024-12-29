@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  Platform,
-} from "react-native";
-
-import CausalityClient from "@/api/causality_client";
+import { StyleSheet, View, Text, FlatList, Platform } from "react-native";
 
 export default function TabTwoScreen() {
   const [redemptionHistory, setRedemptionHistory] = useState([
@@ -22,14 +14,6 @@ export default function TabTwoScreen() {
     { date: "2024-12-12", transactionName: "Order 131", order: "Pending" },
   ]);
 
-  const client = new CausalityClient(
-    {
-      "Content-Type": "application/json",
-    },
-    "$2y$10$wjBFiFlS3medyxMYFw6JK.g2KBrv9oLKZ1aO0RMLoO8cdfrEyO5Ty",
-    "dhz7wo8J"
-  );
-
   const renderTableHeader = () => (
     <View style={styles.tableRow}>
       <Text style={[styles.tableHeader, styles.cell]}>Date</Text>
@@ -41,9 +25,7 @@ export default function TabTwoScreen() {
   const renderTableRow = ({ item }: { item: any }) => (
     <View style={styles.tableRow}>
       <Text style={[styles.cell, styles.cellText]}>{item.date}</Text>
-      <Text style={[styles.cell, styles.cellText]}>
-        {item.transactionName}
-      </Text>
+      <Text style={[styles.cell, styles.cellText]}>{item.transactionName}</Text>
       <Text style={[styles.cell, styles.cellText]}>{item.order}</Text>
     </View>
   );
