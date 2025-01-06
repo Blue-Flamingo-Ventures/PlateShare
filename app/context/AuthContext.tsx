@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Simulate login by storing token
   const login = async (email: string, _password: string) => {
+    // ADD AUTH0 LOGIC TO CONNECT BACKEND HERE
     // Typically you'd verify with a backend here
     const dummyToken = 'abc12345';
     // await SecureStore.setItemAsync('userToken', dummyToken);
