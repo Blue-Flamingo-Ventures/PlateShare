@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, Redirect } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
@@ -6,9 +6,20 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useAuth } from "../context/AuthContext";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+  const {user, isLoading} = useAuth();
+
+  if (isLoading) {
+    return null;
+  }
+  if (!user) {
+    return <Redirect href="/auth/login" />;
+  }
+
 
   return (
     <Tabs
@@ -31,7 +42,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={24} name="house.fill" color={color} />
           ),
         }}
       />
@@ -40,16 +51,7 @@ export default function TabLayout() {
         options={{
           title: "Settings",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="gear" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: "History",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.circle" color={color} />
+            <IconSymbol size={24} name="gear.circle.fill" color={color} />
           ),
         }}
       />
