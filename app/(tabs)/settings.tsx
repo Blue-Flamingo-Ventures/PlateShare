@@ -1,96 +1,16 @@
-// import {
-//   StyleSheet,
-//   View,
-//   Pressable,
-//   Image,
-//   Platform,
-//   Text,
-// } from "react-native";
-// import{ useState } from "react";
-
-// import CausalityClient from "@/api/causality_client";
-
-// export default function TabTwoScreen() {
-//   const [clearResult, setClearResult] = useState<string | null>(null);
-
-//   const client = new CausalityClient(
-//     {
-//       "Content-Type": "application/json",
-//     },
-//     "$2y$10$wjBFiFlS3medyxMYFw6JK.g2KBrv9oLKZ1aO0RMLoO8cdfrEyO5Ty",
-//     "dhz7wo8J"
-//   );
-
-//   return (
-//     <View style={styles.buttonContainer}>
-//       <Pressable
-//         style={({ pressed }) => [
-//           styles.outlinedButton,
-//           pressed && styles.buttonPressed,
-//         ]}
-//         onPress={async () => {
-//           console.log('hello from func')
-
-//           let response = await client.clearUids();
-//           console.log(response)
-//           setClearResult(response.message)
-//         }}
-//       >
-//         <Text style={styles.buttonText}>Clear All Vouchers</Text>
-//       </Pressable>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#FDF7F2", // Changed to white
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   headerContainer: {
-//     flex: 2,
-//     justifyContent: "center",
-//     width: "100%",
-//   },
-//   headerText: {
-//     fontSize: 36,
-//     fontWeight: "700",
-//     textAlign: "center",
-//     color: "#333",
-//     marginHorizontal: 20,
-//   },
-//   buttonContainer: {
-//     flex: 1,
-//     justifyContent: "center",
-//     width: "100%",
-//     alignItems: "center",
-//   },
-//   outlinedButton: {
-//     borderWidth: 2,
-//     borderColor: "#6D9FB1",
-//     borderRadius: 8,
-//     paddingVertical: 12,
-//     paddingHorizontal: 40,
-//     backgroundColor: "transparent",
-//   },
-//   buttonPressed: {
-//     backgroundColor: "#E4EFF2",
-//   },
-//   buttonText: {
-//     fontSize: 18,
-//     color: "#6D9FB1",
-//     fontWeight: "600",
-//   },
-// });
-
-import { StyleSheet, View, Pressable, Text } from "react-native";
-import { useState } from "react";
-
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Text,
+  SafeAreaView // <-- Add this
+} from "react-native";
 import CausalityClient from "causality-ts";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function TabTwoScreen() {
+  const { logout } = useAuth();
   const [clearResult, setClearResult] = useState<string | null>(null);
 
   const client = new CausalityClient(
@@ -98,56 +18,59 @@ export default function TabTwoScreen() {
     "dhz7wo8J"
   );
 
+  const handleClearVouchers = async () => {
+    console.log("Clearing vouchers...");
+    const response = await client.ClearUids();
+    console.log(response);
+    setClearResult(response.message);
+  };
+
+  const handleLogout = () => {
+    try {
+      logout();
+      console.log("User logged out");
+    } catch (error) {
+      console.error("ERROR", error);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Settings</Text>
-      </View>
+    <SafeAreaView style={styles.safeArea}> {/* <-- Wrap in SafeAreaView */}
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Settings</Text>
+        </View>
 
-      {/* Functional Button */}
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={({ pressed }) => [
-            styles.outlinedButton,
-            pressed && styles.buttonPressed,
-          ]}
-          onPress={async () => {
-            console.log("hello from func");
-            let response = await client.ClearUids();
-            console.log(response);
-            setClearResult(response.message);
-          }}
-        >
-          <Text style={styles.buttonText}>Clear All Vouchers</Text>
-        </Pressable>
+        {/* Bottom Links / Buttons */}
+        <View style={styles.bottomContainer}>
+          <Pressable
+            style={({ hovered, pressed }) => [
+              styles.logoutButton,
+              hovered && styles.logoutHovered,
+              pressed && styles.logoutPressed,
+            ]}
+            onPress={handleLogout}
+          >
+            <Text style={styles.logoutButtonText}>Log Out</Text>
+          </Pressable>
+        </View>
       </View>
-
-      {/* Non-Functional Buttons */}
-      <View style={styles.nonFunctionalContainer}>
-        <Pressable style={styles.nonFunctionalButton}>
-          <Text style={styles.nonFunctionalButtonText}>Update Profile</Text>
-        </Pressable>
-        <Pressable style={styles.nonFunctionalButton}>
-          <Text style={styles.nonFunctionalButtonText}>Change Password</Text>
-        </Pressable>
-        <Pressable style={styles.nonFunctionalButton}>
-          <Text style={styles.nonFunctionalButtonText}>
-            Notification Settings
-          </Text>
-        </Pressable>
-        <Pressable style={styles.nonFunctionalButton}>
-          <Text style={styles.nonFunctionalButtonText}>Privacy Policy</Text>
-        </Pressable>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
+//
+// STYLESHEET
+//
 const styles = StyleSheet.create({
-  container: {
+  // The SafeAreaView needs its own style or can reuse container styles
+  safeArea: {
     flex: 1,
     backgroundColor: "#FDF7F2",
+  },
+  container: {
+    flex: 1,
     padding: 16,
   },
   headerContainer: {
@@ -160,44 +83,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333",
   },
-  buttonContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  outlinedButton: {
-    borderWidth: 2,
-    borderColor: "#6D9FB1",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    backgroundColor: "transparent",
-  },
-  buttonPressed: {
-    backgroundColor: "#E4EFF2",
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#6D9FB1",
-    fontWeight: "600",
-  },
-  nonFunctionalContainer: {
+  bottomContainer: {
     marginTop: 20,
     alignItems: "center",
   },
-  nonFunctionalButton: {
+  logoutButton: {
     width: "90%",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#cc0000",
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    marginBottom: 12,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#ffcccc",
     alignItems: "center",
   },
-  nonFunctionalButtonText: {
+  logoutHovered: {
+    backgroundColor: "#ff9999",
+  },
+  logoutPressed: {
+    backgroundColor: "#ff7777",
+  },
+  logoutButtonText: {
     fontSize: 16,
-    color: "#555",
-    fontWeight: "500",
+    color: "#fff",
+    fontWeight: "600",
   },
 });
